@@ -3,7 +3,7 @@ const { cadastrarUsuario, login } = require('./controladores/controlador');
 const { verificaLogin } = require('./intermediarios/verificalogin');
 const { detalharUsuario, atualizarUsuario } = require('./controladores/usuarios');
 const { listarCategorias } = require('./controladores/categorias');
-const { listarTransacoes, detalharTransacao } = require('./controladores/transacoes');
+const { listarTransacoes, detalharTransacao, cadastrarTransacao, atualizarTransacao } = require('./controladores/transacoes');
 
 const rotas = express();
 
@@ -19,5 +19,7 @@ rotas.get('/categoria', listarCategorias)
 
 rotas.get('/transacao', listarTransacoes);
 rotas.get('/transacao/:id', detalharTransacao);
+rotas.post('/transacao', cadastrarTransacao);
+rotas.put('/transacao/:id', atualizarTransacao);
 
 module.exports = rotas;
