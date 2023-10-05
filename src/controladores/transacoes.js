@@ -137,10 +137,33 @@ const deletarTrasacao = async (req, res) => {
     }
 };
 
+const obterExtratoTransacoes = async (req, res) => {
+    const { id } = req.usuario;
+
+    try {
+        const query = {
+            text: `SELECT
+                      SUM(CASE WHEN tipo = 'entrada' THEN valor ELSE 0 END) AS entrada,
+                      SUM(CASE WHEN tipo = 'saida' THEN valor ELSE 0 END) AS saida
+                  FROM transacoes
+                  WHERE usuario_id = $1`,
+            values: [id],
+        };
+
+        const { rows } = await pool.query(query);
+
+
+        return res.status(200).json(rows);
+    } catch (error) {
+        return res.status(500).json({ mensagem: 'Erro interno do servidor' });
+    }
+};
+
 module.exports = {
     listarTransacoes,
     detalharTransacao,
     cadastrarTransacao,
     atualizarTransacao,
-    deletarTrasacao
+    deletarTrasacao,
+    obterExtratoTransacoes
 };
